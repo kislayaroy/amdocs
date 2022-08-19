@@ -1,0 +1,3 @@
+com\uxpsystems\assignment\controller\UserControllerTest.class
+com\uxpsystems\assignment\service\impl\UserServiceImplTest.class
+com\uxpsystems\assignment\dao\UserDaoTests.class
