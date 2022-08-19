@@ -1,5 +1,8 @@
 package com.uxpsystems.assignment.entity;
 
+/**
+ * TO Store the Response for new User
+ */
 public class Response {
 
     private String message;

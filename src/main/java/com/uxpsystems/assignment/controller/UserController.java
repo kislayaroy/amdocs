@@ -3,15 +3,24 @@ package com.uxpsystems.assignment.controller;
 import com.uxpsystems.assignment.entity.Response;
 import com.uxpsystems.assignment.entity.Users;
 import com.uxpsystems.assignment.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * REST CONTROLLER for handling all the request
+ */
 @RestController
 @RequestMapping("/users")
 public class UserController {
+    /**
+     * Logger for better console output
+     */
+    Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     private UserService userService;
@@ -22,6 +31,7 @@ public class UserController {
      */
     @GetMapping("/hello")
     public String hello(){
+        logger.trace("Test method called");
         return "Hello";
     }
 
@@ -32,7 +42,9 @@ public class UserController {
      */
     @PostMapping("/save")
     public Response saveUser(@RequestBody Users users){
-       return new Response("User Inserted Successfully", Boolean.TRUE);
+        logger.trace("Save User method called");
+        userService.saveUser(users);
+        return new Response("User Inserted Successfully", Boolean.TRUE);
     }
 
     /**
@@ -41,6 +53,7 @@ public class UserController {
      */
     @GetMapping("/")
     public ResponseEntity<List<Users>> getAllUser(){
+        logger.trace("Get All User method called");
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
@@ -52,6 +65,7 @@ public class UserController {
      */
     @PutMapping("/update/{userId}")
     public ResponseEntity<Users> updateUser(@RequestBody Users users, @PathVariable long userId){
+        logger.trace("Update User method called");
         return ResponseEntity.ok(userService.updateUser(userId, users));
     }
 
@@ -62,6 +76,7 @@ public class UserController {
      */
     @GetMapping("/{userId}")
     public ResponseEntity<Users> getById(@PathVariable long userId){
+        logger.trace("Get By User Id method called");
         return ResponseEntity.ok(userService.findById(userId));
     }
 
@@ -72,6 +87,7 @@ public class UserController {
      */
     @DeleteMapping("/delete/{userId}")
     public String deleteUser(@PathVariable long userId){
+        logger.trace("Delete User method called");
         userService.deleteUser(userId);
         return "User Deleted Successfully";
     }

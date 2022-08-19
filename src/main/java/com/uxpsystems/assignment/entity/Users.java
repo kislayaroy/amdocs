@@ -3,6 +3,9 @@ package com.uxpsystems.assignment.entity;
 
 import javax.persistence.*;
 
+/**
+ * MODEL class for the USER
+ */
 @Entity
 public class Users {
     /**
@@ -19,6 +22,9 @@ public class Users {
     @Column(name = "status")
     private Status status;
 
+    /**
+     * Enum class for the status of the User
+     */
     public enum Status{
         Activated,
         Deactivated

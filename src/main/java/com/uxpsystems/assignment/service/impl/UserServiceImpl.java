@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * BUSINESS LOGIC
+ * BUSINESS LOGIC Service Class Implementation
  */
 @Service
 public class UserServiceImpl implements UserService {
@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     List<Users> user = new ArrayList<>();
-
+    //Testing purpose
     public UserServiceImpl(){
         user.add(new Users("Kislaya","12345", Users.Status.Activated));
     }
