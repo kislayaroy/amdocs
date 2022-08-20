@@ -1,14 +1,13 @@
 package com.uxpsystems.assignment.service.impl;
 
+import com.uxpsystems.assignment.config.UserNotFoundException;
 import com.uxpsystems.assignment.dao.UserDao;
 import com.uxpsystems.assignment.entity.Users;
-import com.uxpsystems.assignment.config.UserNotFoundException;
 import com.uxpsystems.assignment.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,8 +19,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDao userDao;
-
-    List<Users> user = new ArrayList<>();
 
     /**
      * Testing purpose

@@ -5,6 +5,7 @@ import com.uxpsystems.assignment.entity.Users;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.stubbing.OngoingStubbing;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,14 +62,15 @@ class UserServiceImplTest {
        assertEquals(user.getUsername(),userService.saveUser(user).getUsername());
     }
 
-    /*@Test
+    @Test
     public void deleteTest(){
+        String username = "kislaya";
+        String pass = "12345";
         Users user = new Users();
-        user.setUsername("Kishu");
-        user.setPassword("12345");
-        user.setStatus(Users.Status.Activated);
-        when(userService.saveUser(user)).thenReturn(user);
-        userService.deleteUser(user.getUserId());
+        user.setUsername(username);
+        user.setPassword(pass);
+        OngoingStubbing<Users> usersOngoingStubbing = when(userDao.save(user)).thenReturn(user);
+        userDao.deleteById((long) 0);
         verify(userDao,times(1)).deleteById(user.getUserId());
-    }*/
+    }
 }
