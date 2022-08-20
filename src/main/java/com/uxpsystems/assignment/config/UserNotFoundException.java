@@ -4,7 +4,9 @@ package com.uxpsystems.assignment.config;
  * USER NOT FOUND EXCEPTION
  */
 public class UserNotFoundException extends RuntimeException {
+    String message;
     public UserNotFoundException(String message) {
-        super(message);
+        super(String.format(message));
+        this.message = message;
     }
 }

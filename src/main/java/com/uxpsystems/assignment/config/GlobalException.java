@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalException  {
 
     @ExceptionHandler(UserNotFoundException.class)
-    public String UserNotFound(){
-        return "User Not Found";
+    public String userNotFound(UserNotFoundException ex){
+        String message = ex.getMessage();
+        return message;
     }
 }

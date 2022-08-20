@@ -1,5 +1,6 @@
 package com.uxpsystems.assignment.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.uxpsystems.assignment.entity.Response;
 import com.uxpsystems.assignment.entity.Users;
@@ -19,7 +20,12 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -51,6 +57,20 @@ public class UserControllerTest {
         String res =  result.getResponse().getContentAsString();
         Response response = mapper.readValue(res, Response.class);
         Assert.assertTrue(response.isStatus() == Boolean.TRUE);
+    }
+
+    @Test
+    public void updateUserTest() throws Exception {
+        List<Users> user = new ArrayList<>();
+        Users users = new Users("Kislaya", "12345", Users.Status.Activated);
+        user.add(users);
+        users.setUsername("Kishu");
+        String json = mapper.writeValueAsString(users);
+        MvcResult result = mockMvc.perform(put("/users/update/1").content(json)
+        .contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isOk()).andReturn();
+        String res =  result.getResponse().getContentAsString();
+        Response response = mapper.readValue(res, Response.class);
+        Assert.assertTrue(response.isStatus()==Boolean.TRUE);
     }
 
 }

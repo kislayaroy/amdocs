@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
+@Transactional
 class UserServiceImplTest {
 
     @Mock
@@ -44,13 +46,28 @@ class UserServiceImplTest {
     @Test
     public void findByIdTest(){
         Optional<Users> user = Optional.ofNullable(new Users("Amdocs","12345", Users.Status.Activated));
-        when(userDao.findById(1L)).thenReturn(user);
-        assertEquals(0, userService.findById(1L).getUserId());
+        when(userDao.findById(0L)).thenReturn(user);
+        assertEquals(0, userService.findById(0L).getUserId());
     }
-    /*
+
     @Test
+    public void getUsernameTest(){
+       String username = "kislaya";
+       String pass = "12345";
+       Users user = new Users();
+       user.setUsername(username);
+       user.setPassword(pass);
+       when(userDao.save(user)).thenReturn(user);
+       assertEquals(user.getUsername(),userService.saveUser(user).getUsername());
+    }
+
+    /*@Test
     public void deleteTest(){
-        Users user = new Users("Kislaya","12345","Activated");
+        Users user = new Users();
+        user.setUsername("Kishu");
+        user.setPassword("12345");
+        user.setStatus(Users.Status.Activated);
+        when(userService.saveUser(user)).thenReturn(user);
         userService.deleteUser(user.getUserId());
         verify(userDao,times(1)).deleteById(user.getUserId());
     }*/

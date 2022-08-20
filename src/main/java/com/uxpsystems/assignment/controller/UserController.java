@@ -44,7 +44,8 @@ public class UserController {
     public Response saveUser(@RequestBody Users users){
         logger.trace("Save User method called");
         userService.saveUser(users);
-        return new Response("User Inserted Successfully", Boolean.TRUE);
+        long userId = users.getUserId();
+        return new Response(userId,"User Inserted Successfully", Boolean.TRUE);
     }
 
     /**
@@ -64,9 +65,10 @@ public class UserController {
      * @return
      */
     @PutMapping("/update/{userId}")
-    public ResponseEntity<Users> updateUser(@RequestBody Users users, @PathVariable long userId){
+    public Response updateUser(@RequestBody Users users, @PathVariable long userId){
         logger.trace("Update User method called");
-        return ResponseEntity.ok(userService.updateUser(userId, users));
+        userService.updateUser(userId, users);
+        return new Response(userId,"User Details Updated successfully", Boolean.TRUE);
     }
 
     /**

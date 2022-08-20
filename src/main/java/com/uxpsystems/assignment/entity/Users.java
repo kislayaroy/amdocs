@@ -2,6 +2,7 @@ package com.uxpsystems.assignment.entity;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 /**
  * MODEL class for the USER
@@ -16,6 +17,7 @@ public class Users {
     @Column(name = "user_id")
     private long userId;
     @Column(name = "username", unique = true)
+    @NotBlank(message = "User name must be unique")
     private String username;
     @Column(name = "password")
     private String password;
