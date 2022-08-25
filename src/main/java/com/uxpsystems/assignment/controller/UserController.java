@@ -91,6 +91,6 @@ public class UserController {
     public String deleteUser(@PathVariable long userId){
         logger.trace("Delete User method called");
         userService.deleteUser(userId);
-        return "User Deleted Successfully";
+        return "User Deleted Successfully with userId : "+userId;
     }
 }

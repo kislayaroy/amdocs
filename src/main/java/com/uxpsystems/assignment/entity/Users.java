@@ -1,6 +1,8 @@
 package com.uxpsystems.assignment.entity;
 
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
@@ -8,6 +10,8 @@ import javax.validation.constraints.NotBlank;
  * MODEL class for the USER
  */
 @Entity
+@Cacheable
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Users {
     /**
      * primary key for User
