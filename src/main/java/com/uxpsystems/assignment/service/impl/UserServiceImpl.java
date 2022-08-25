@@ -1,5 +1,4 @@
 package com.uxpsystems.assignment.service.impl;
-
 import com.uxpsystems.assignment.config.UserNotFoundException;
 import com.uxpsystems.assignment.dao.UserDao;
 import com.uxpsystems.assignment.entity.Users;
@@ -30,14 +29,6 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public Users saveUser(Users users) {
-        String username = users.getUsername();
-        String password = users.getPassword();
-        if(username.isEmpty()){
-            throw new UserNotFoundException("Please Enter A Valid Username");
-        }
-        if(password.isEmpty()){
-            throw new UserNotFoundException("Please Enter A Valid Password");
-        }
         return userDao.save(users);
     }
 
@@ -56,14 +47,6 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public Users updateUser(long userId, Users users) {
         Users updateUsers = userDao.findById(userId).orElseThrow(() -> new UserNotFoundException("User Not Found"));
-        String username = users.getUsername();
-        String password = users.getPassword();
-        if(username.isEmpty()){
-            throw new UserNotFoundException("Please Enter A Valid Username");
-        }
-        if(password.isEmpty()){
-            throw new UserNotFoundException("Please Enter A Valid Password");
-        }
         updateUsers.setUsername(users.getUsername());
         updateUsers.setPassword(users.getPassword());
         updateUsers.setStatus(users.getStatus());

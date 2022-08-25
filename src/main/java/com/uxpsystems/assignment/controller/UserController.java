@@ -1,14 +1,13 @@
 package com.uxpsystems.assignment.controller;
 
-import com.uxpsystems.assignment.entity.Response;
 import com.uxpsystems.assignment.entity.Users;
 import com.uxpsystems.assignment.service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -17,10 +16,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    /**
-     * Logger for better console output
-     */
-    Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     private UserService userService;
@@ -31,7 +26,6 @@ public class UserController {
      */
     @GetMapping("/hello")
     public String hello(){
-        logger.trace("Test method called");
         return "Hello";
     }
 
@@ -41,11 +35,8 @@ public class UserController {
      * @return
      */
     @PostMapping("/save")
-    public Response saveUser(@RequestBody Users users){
-        logger.trace("Save User method called");
-        userService.saveUser(users);
-        long userId = users.getUserId();
-        return new Response(userId,"User Inserted Successfully", Boolean.TRUE);
+    public ResponseEntity<Users> saveUser(@Valid @RequestBody Users users){
+        return new ResponseEntity<>(userService.saveUser(users), HttpStatus.CREATED);
     }
 
     /**
@@ -54,7 +45,6 @@ public class UserController {
      */
     @GetMapping("/")
     public ResponseEntity<List<Users>> getAllUser(){
-        logger.trace("Get All User method called");
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
@@ -65,10 +55,10 @@ public class UserController {
      * @return
      */
     @PutMapping("/update/{userId}")
-    public Response updateUser(@RequestBody Users users, @PathVariable long userId){
-        logger.trace("Update User method called");
-        userService.updateUser(userId, users);
-        return new Response(userId,"User Details Updated successfully", Boolean.TRUE);
+    public ResponseEntity<Users> updateUser(@Valid @RequestBody Users users,
+                               @Valid @PathVariable long userId){
+        return new ResponseEntity<>(userService.updateUser(userId, users), HttpStatus.OK
+        );
     }
 
     /**
@@ -78,7 +68,6 @@ public class UserController {
      */
     @GetMapping("/{userId}")
     public ResponseEntity<Users> getById(@PathVariable long userId){
-        logger.trace("Get By User Id method called");
         return ResponseEntity.ok(userService.findById(userId));
     }
 
@@ -89,7 +78,6 @@ public class UserController {
      */
     @DeleteMapping("/delete/{userId}")
     public String deleteUser(@PathVariable long userId){
-        logger.trace("Delete User method called");
         userService.deleteUser(userId);
         return "User Deleted Successfully with userId : "+userId;
     }

@@ -21,9 +21,10 @@ public class Users {
     @Column(name = "user_id")
     private long userId;
     @Column(name = "username", unique = true)
-    @NotBlank(message = "User name must be unique")
+    @NotBlank(message = "Username must be unique or not empty")
     private String username;
     @Column(name = "password")
+    @NotBlank(message = "Password must be  not empty")
     private String password;
     @Column(name = "status")
     private Status status;

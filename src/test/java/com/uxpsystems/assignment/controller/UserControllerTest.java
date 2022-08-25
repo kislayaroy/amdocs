@@ -1,8 +1,6 @@
 package com.uxpsystems.assignment.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.uxpsystems.assignment.dao.UserDao;
 import com.uxpsystems.assignment.entity.Response;
 import com.uxpsystems.assignment.entity.Users;
 import com.uxpsystems.assignment.service.impl.UserServiceImpl;
@@ -11,27 +9,25 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -43,8 +39,8 @@ public class UserControllerTest {
     @InjectMocks
     private UserController controller;
 
-    @Mock
-    private UserDao userDao;
+    @MockBean
+    private UserServiceImpl userService;
 
     private MockMvc mockMvc;
 
@@ -81,6 +77,36 @@ public class UserControllerTest {
         String res =  result.getResponse().getContentAsString();
         Response response = mapper.readValue(res, Response.class);
         Assert.assertTrue(response.isStatus()==Boolean.TRUE);
+    }
+
+    @Test
+    public void deleteUserTest() throws Exception{
+        Users user = new Users();
+        user.setUserId(1);
+        user.setUsername("Kislaya");
+        user.setPassword("12345");
+        user.setStatus(Users.Status.Activated);
+        String json = mapper.writeValueAsString(user);
+        userService.deleteUser(1);
+        verify(userService, Mockito.times(1)).deleteUser(user.getUserId());
+        MvcResult result = mockMvc.perform(delete("/users/delete/1").content(json)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)).andReturn();
+        MockHttpServletResponse response = result.getResponse();
+        assertEquals(HttpStatus.OK.value(), response.getStatus());
+}
+
+    @Test
+    public void getUserTest() throws Exception{
+        Users user = new Users();
+        user.setUserId(1);
+        user.setUsername("Kislaya");
+        user.setPassword("12345");
+        user.setStatus(Users.Status.Activated);
+        String json = mapper.writeValueAsString(user);
+        MvcResult result = mockMvc.perform(get("/users/1").content(json)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(status().isOk()).andReturn();
+        MockHttpServletResponse response = result.getResponse();
+        assertEquals(HttpStatus.OK.value(), response.getStatus());
     }
 
 }
