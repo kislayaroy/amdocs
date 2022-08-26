@@ -5,6 +5,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.hibernate.exception.ConstraintViolationException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +22,14 @@ public class GlobalException  {
         Map<String, String> exceptionHashMap = new HashMap<>();
         ex.getBindingResult().getFieldErrors().forEach(error->
                 exceptionHashMap.put(error.getField(),error.getDefaultMessage()));
+        return exceptionHashMap;
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ConstraintViolationException.class)
+    public Map<String, String> handleDuplicateArgument(ConstraintViolationException ex){
+        Map<String, String> exceptionHashMap = new HashMap<>();
+        exceptionHashMap.put("Error", "Username it already taken please enter a unique username");
         return exceptionHashMap;
     }
 
