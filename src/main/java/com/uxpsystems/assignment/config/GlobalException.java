@@ -32,8 +32,7 @@ public class GlobalException  {
         exceptionHashMap.put("Error", "Username it already taken please enter a unique username");
         return exceptionHashMap;
     }
-
-
+    
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(UserNotFoundException.class)
     public Map<String,String> userNotFound(UserNotFoundException ex){
